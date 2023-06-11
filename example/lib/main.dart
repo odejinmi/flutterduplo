@@ -82,8 +82,12 @@ class _NewpageState extends State<Newpage> {
   void initState() {
     check = isDarkMode;
     plugin.initialize(
-        publicKey: 'pk_test_oppvguyfnlna4f1eidl1bqrkxrxfszgdvgwq1q',
-        secretKey: 'sk_test_genllkfsimb3wrqamv02hcqbr3fuo1alekr7cpy'); //Replace with your keys
+         //test
+        // publicKey: 'pk_test_z3q5jhyivn4png4zo7p2obnjdgbhmzygfib8ua',
+        // secretKey: 'sk_test_eslf6wsrzvccc6xnp9pvukiejq8lauenhv7cp9w'
+        publicKey: 'pk_live_cllwoquh6duwcojl6ils7mhoieene068gc3dgv',
+        secretKey: 'sk_live_bfege07nepjhbrjebuth041im4pplrwv6bnvlbh'
+    ); //Replace with your keys
     super.initState();
   }
 

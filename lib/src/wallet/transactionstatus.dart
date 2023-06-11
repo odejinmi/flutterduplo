@@ -97,8 +97,8 @@ class _TransactionstatusState
   Widget buildAnimatedChild() {
     return Material(
       color: Colors.white,
-      elevation: 5.0,
-      borderRadius: BorderRadius.circular(5),
+      // elevation: 5.0,
+      // borderRadius: BorderRadius.circular(5),
       child: Container(
         height: 400,
         child: Column(

@@ -173,155 +173,159 @@ class _DebitcardState extends BaseCheckoutMethodState<Debitcard> {
                             ),),
                         ),
                       ),
+                      SizedBox(height: 30,),
                       Material(
                         color: Colors.white,
                         elevation: 5.0,
                         borderRadius: BorderRadius.circular(5),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const SizedBox(
-                              height: 30,
-                            ),
-                            Topback(charge: _charge, onResponse: onResponse),
-                            Align(
-                              alignment: Alignment.topRight,
-                              child: Text(
-                                Utils.formatAmount(_charge.amount),
-                                style: GoogleFonts.dmSans(
-                                    color: Colors.black,
-                                    fontSize: 24,
-                                    fontWeight: FontWeight.bold),
+                        child: Padding(
+                          padding: const EdgeInsets.all(15.0),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const SizedBox(
+                                height: 30,
                               ),
-                            ),
-                            ispinned?PinWidget(onpress: (pin){
-                              _charge.card!.pin = pin;
-                              isLoading = true;
-                              setState(() {
+                              Topback(charge: _charge, onResponse: onResponse),
+                              Align(
+                                alignment: Alignment.topRight,
+                                child: Text(
+                                  Utils.formatAmount(_charge.amount),
+                                  style: GoogleFonts.dmSans(
+                                      color: Colors.black,
+                                      fontSize: 24,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                              ),
+                              ispinned?PinWidget(onpress: (pin){
+                                _charge.card!.pin = pin;
+                                isLoading = true;
+                                setState(() {
 
-                              });
-                              chargecard();
-                              },):
-                            Column(
-                              children: [
-                                const SizedBox(height: 30,),
-                                const Text("Pay with Card", style: TextStyle(fontSize: 24, fontWeight: FontWeight.w400),),
-                                const Text("Enter your card information", style: TextStyle(fontSize: 14.65, fontWeight: FontWeight.w400),),
-                                const SizedBox(
-                                  height: 40,
-                                ),
-                                Text(
-                                  "Card Number",
-                                  style: GoogleFonts.dmSans(),
-                                ),
-                                const SizedBox(
-                                  height: 10,
-                                ),
-                                NumberField(
-                                  key: const Key("CardNumberKey"),
-                                  controller: numberController,
-                                  card: _card,
-                                  onSaved: (String? value) {
-                                    setState(() {
-                                      _card!.number =
-                                          CardUtils.getCleanedNumber(value);
-                                    });
-                                  },
-                                  suffix: getCardIcon(),
-                                ),
-                                const SizedBox(
-                                  height: 15.0,
-                                ),
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: <Widget>[
-                                    Flexible(
-                                      child: Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                        children: [
-                                          Text(
-                                            "Expiry Date",
-                                            style: GoogleFonts.dmSans(),
-                                          ),
-                                          const SizedBox(
-                                            height: 10,
-                                          ),
-                                          DateField(
-                                            controller: expireController,
-                                            key: const ValueKey("ExpiryKey"),
-                                            card: _card,
-                                            onSaved: (value) {
-                                              setState(() {
-                                                List<int> expiryDate =
-                                                CardUtils.getExpiryDate(value);
-                                                _card!.expiryMonth = expiryDate[0];
-                                                _card!.expiryYear = expiryDate[1];
-                                              });
-                                            },
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                    const SizedBox(width: 10.0),
-                                    Flexible(
+                                });
+                                chargecard();
+                                },):
+                              Column(
+                                children: [
+                                  const SizedBox(height: 30,),
+                                  const Text("Pay with Card", style: TextStyle(fontSize: 24, fontWeight: FontWeight.w400),),
+                                  const Text("Enter your card information", style: TextStyle(fontSize: 14.65, fontWeight: FontWeight.w400),),
+                                  const SizedBox(
+                                    height: 40,
+                                  ),
+                                  Text(
+                                    "Card Number",
+                                    style: GoogleFonts.dmSans(),
+                                  ),
+                                  const SizedBox(
+                                    height: 10,
+                                  ),
+                                  NumberField(
+                                    key: const Key("CardNumberKey"),
+                                    controller: numberController,
+                                    card: _card,
+                                    onSaved: (String? value) {
+                                      setState(() {
+                                        _card!.number =
+                                            CardUtils.getCleanedNumber(value);
+                                      });
+                                    },
+                                    suffix: getCardIcon(),
+                                  ),
+                                  const SizedBox(
+                                    height: 15.0,
+                                  ),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                    children: <Widget>[
+                                      Flexible(
                                         child: Column(
                                           crossAxisAlignment: CrossAxisAlignment.start,
                                           children: [
                                             Text(
-                                              "CVV",
+                                              "Expiry Date",
                                               style: GoogleFonts.dmSans(),
                                             ),
                                             const SizedBox(
                                               height: 10,
                                             ),
-                                            CVCField(
-                                              controller: cvvController,
-                                              key: const Key("CVVKey"),
+                                            DateField(
+                                              controller: expireController,
+                                              key: const ValueKey("ExpiryKey"),
                                               card: _card,
                                               onSaved: (value) {
                                                 setState(() {
-                                                  _card!.cvc =
-                                                      CardUtils.getCleanedNumber(value);
+                                                  List<int> expiryDate =
+                                                  CardUtils.getExpiryDate(value);
+                                                  _card!.expiryMonth = expiryDate[0];
+                                                  _card!.expiryYear = expiryDate[1];
                                                 });
                                               },
                                             ),
                                           ],
-                                        )),
-                                  ],
-                                ),
-                                const SizedBox(
-                                  height: 20,
-                                ),
-                                Submitbutton(
-                                    name: "Pay ${Utils.formatAmount(_charge.amount)}",
-                                    press: () async {
-                                      List<int> expiryDate = CardUtils.getExpiryDate(
-                                          expireController.text);
-                                        _charge.card!.number =
-                                            CardUtils.getCleanedNumber(
-                                                numberController.text);
-                                      _charge.card!.type = _card!.type;
-                                      _charge.method = CheckoutMethod.card;
-                                        _charge.card!.expiryMonth = expiryDate[0];
-                                        _charge.card!.expiryYear = expiryDate[1];
-                                        _charge.card!.cvc = cvvController.text;
-                                      if (_charge.currency == "NGN") {
-                                        ispinned = true;
-                                      }else{
-                                        isLoading = true;
-                                        chargecard();
-                                      }
-                                      setState(() {
+                                        ),
+                                      ),
+                                      const SizedBox(width: 10.0),
+                                      Flexible(
+                                          child: Column(
+                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            children: [
+                                              Text(
+                                                "CVV",
+                                                style: GoogleFonts.dmSans(),
+                                              ),
+                                              const SizedBox(
+                                                height: 10,
+                                              ),
+                                              CVCField(
+                                                controller: cvvController,
+                                                key: const Key("CVVKey"),
+                                                card: _card,
+                                                onSaved: (value) {
+                                                  setState(() {
+                                                    _card!.cvc =
+                                                        CardUtils.getCleanedNumber(value);
+                                                  });
+                                                },
+                                              ),
+                                            ],
+                                          )),
+                                    ],
+                                  ),
+                                  const SizedBox(
+                                    height: 20,
+                                  ),
+                                  Submitbutton(
+                                      name: "Pay ${Utils.formatAmount(_charge.amount)}",
+                                      press: () async {
+                                        List<int> expiryDate = CardUtils.getExpiryDate(
+                                            expireController.text);
+                                          _charge.card!.number =
+                                              CardUtils.getCleanedNumber(
+                                                  numberController.text);
+                                        _charge.card!.type = _card!.type;
+                                        _charge.method = CheckoutMethod.card;
+                                          _charge.card!.expiryMonth = expiryDate[0];
+                                          _charge.card!.expiryYear = expiryDate[1];
+                                          _charge.card!.cvc = cvvController.text;
+                                        if (_charge.currency == "NGN") {
+                                          ispinned = true;
+                                        }else{
+                                          isLoading = true;
+                                          chargecard();
+                                        }
+                                        setState(() {
 
-                                      });
-                                    }),
-                              ],
-                            ),
-                            const SizedBox(
-                              height: 30,
-                            ),
-                          ],
+                                        });
+                                      }),
+                                ],
+                              ),
+                              const SizedBox(
+                                height: 30,
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                     ],
