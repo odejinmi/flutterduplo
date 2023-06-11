@@ -86,21 +86,26 @@ class _FundwalletState extends BaseCheckoutMethodState<Fundwallet> {
   @override
   Widget buildAnimatedChild() {
     return isloading
-        ? Transactionstatus(
-            method: method,
-            charge: _charge,
-            secretkey: widget.secretKey,
-            verify: false,
-            // service: widget.bankService,
-            onResponse: _onPaymentResponse,
-          )
+        ? Material(
+          color: Colors.white,
+          elevation: 5.0,
+          borderRadius: BorderRadius.circular(5),
+          child: Transactionstatus(
+              method: method,
+              charge: _charge,
+              secretkey: widget.secretKey,
+              verify: false,
+              // service: widget.bankService,
+              onResponse: _onPaymentResponse,
+            ),
+        )
         : Center(
             child: Material(
               color: Colors.white,
               elevation: 5.0,
               borderRadius: BorderRadius.circular(5),
               child: Container(
-                padding: EdgeInsets.symmetric(horizontal: 10),
+                padding: const EdgeInsets.symmetric(horizontal: 10),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
@@ -132,7 +137,7 @@ class _FundwalletState extends BaseCheckoutMethodState<Fundwallet> {
                       height: 40,
                     ),
                     Container(
-                      padding: EdgeInsets.symmetric(horizontal: 20),
+                      padding: const EdgeInsets.symmetric(horizontal: 20),
                       child: Row(
                         children: [
                           const Text("Email",
@@ -142,7 +147,7 @@ class _FundwalletState extends BaseCheckoutMethodState<Fundwallet> {
                             ),),
                           const Spacer(),
                           Text(_charge.email!,
-                            style: TextStyle(
+                            style: const TextStyle(
                                 fontWeight: FontWeight.w400,
                                 fontSize: 17.63
                             ),)
@@ -154,7 +159,7 @@ class _FundwalletState extends BaseCheckoutMethodState<Fundwallet> {
                     const SizedBox(height: 20),
                     GestureDetector(
                       child: Container(
-                        margin: EdgeInsets.symmetric(horizontal: 20),
+                        margin: const EdgeInsets.symmetric(horizontal: 20),
                         child: Row(
                           children: [
                             Image.asset(
@@ -163,10 +168,10 @@ class _FundwalletState extends BaseCheckoutMethodState<Fundwallet> {
                               height: 37,
                               package: 'flutterduplo',
                             ),
-                            SizedBox(width: 30,),
-                            Text("Pay with Card"),
-                            Spacer(),
-                            Icon(Icons.arrow_forward_ios, color: Color(0xff8E959D), size: 14,)
+                            const SizedBox(width: 30,),
+                            const Text("Pay with Card"),
+                            const Spacer(),
+                            const Icon(Icons.arrow_forward_ios, color: Color(0xff8E959D), size: 14,)
                           ],
                         ),
                       ),
@@ -188,7 +193,7 @@ class _FundwalletState extends BaseCheckoutMethodState<Fundwallet> {
                     const SizedBox(height: 20),
                     GestureDetector(
                       child: Container(
-                        margin: EdgeInsets.symmetric(horizontal: 20),
+                        margin: const EdgeInsets.symmetric(horizontal: 20),
                         child: Row(
                           children: [
                             Image.asset(
@@ -197,10 +202,10 @@ class _FundwalletState extends BaseCheckoutMethodState<Fundwallet> {
                               height: 37,
                               package: 'flutterduplo',
                             ),
-                            SizedBox(width: 30,),
-                            Text("Pay with Bank Transfer"),
-                            Spacer(),
-                            Icon(Icons.arrow_forward_ios, color: Color(0xff8E959D), size: 14,)
+                            const SizedBox(width: 30,),
+                            const Text("Pay with Bank Transfer"),
+                            const Spacer(),
+                            const Icon(Icons.arrow_forward_ios, color: Color(0xff8E959D), size: 14,)
                           ],
                         ),
                       ),
@@ -211,40 +216,40 @@ class _FundwalletState extends BaseCheckoutMethodState<Fundwallet> {
                       },
                     ),
 
-                    const SizedBox(height: 20),
-                    const Divider(height: 1),
-                    const SizedBox(height: 20),
-                    GestureDetector(
-                      child: Container(
-                        margin: EdgeInsets.symmetric(horizontal: 20),
-                        child: Row(
-                          children: [
-                            Image.asset(
-                              'assets/images/ussd.png',
-                              width: 37,
-                              height: 37,
-                              package: 'flutterduplo',
-                            ),
-                            SizedBox(width: 30,),
-                            Text("Pay with USSD"),
-                            Spacer(),
-                            Icon(Icons.arrow_forward_ios, color: Color(0xff8E959D), size: 14,)
-                          ],
-                        ),
-                      ),
-                      onTap: (){
-                        method = CheckoutMethod.ussd;
-                        _charge.method = CheckoutMethod.ussd;
-                        var response = CheckoutResponse(
-                            message: 'loading',
-                            reference: _charge.reference,
-                            status: false,
-                            card: _charge.card?..nullifyNumber(),
-                            method: CheckoutMethod.ussd,
-                            verify: false);
-                        onResponse(response);
-                      },
-                    ),
+                    // const SizedBox(height: 20),
+                    // const Divider(height: 1),
+                    // const SizedBox(height: 20),
+                    // GestureDetector(
+                    //   child: Container(
+                    //     margin: EdgeInsets.symmetric(horizontal: 20),
+                    //     child: Row(
+                    //       children: [
+                    //         Image.asset(
+                    //           'assets/images/ussd.png',
+                    //           width: 37,
+                    //           height: 37,
+                    //           package: 'flutterduplo',
+                    //         ),
+                    //         SizedBox(width: 30,),
+                    //         Text("Pay with USSD"),
+                    //         Spacer(),
+                    //         Icon(Icons.arrow_forward_ios, color: Color(0xff8E959D), size: 14,)
+                    //       ],
+                    //     ),
+                    //   ),
+                    //   onTap: (){
+                    //     method = CheckoutMethod.ussd;
+                    //     _charge.method = CheckoutMethod.ussd;
+                    //     var response = CheckoutResponse(
+                    //         message: 'loading',
+                    //         reference: _charge.reference,
+                    //         status: false,
+                    //         card: _charge.card?..nullifyNumber(),
+                    //         method: CheckoutMethod.ussd,
+                    //         verify: false);
+                    //     onResponse(response);
+                    //   },
+                    // ),
                     const SizedBox(
                       height: 30,
                     ),

@@ -62,6 +62,7 @@ class ErrorPage extends StatelessWidget {
                 ),),
             ),
           ),
+          const SizedBox(height: 30,),
           Statuswidget(
             title: "Payment Failed",
             image: 'assets/images/errorbutton.png',

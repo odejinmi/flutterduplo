@@ -93,6 +93,7 @@ class _SuccessfulWidgetState extends State<SuccessfulWidget>
                 ),),
             ),
           ),
+          const SizedBox(height: 30,),
           Statuswidget(
             title: "Payment Successful",
               image: 'assets/images/successbutton.png',

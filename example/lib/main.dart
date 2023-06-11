@@ -207,10 +207,9 @@ class _NewpageState extends State<Newpage> {
                       borderRadius: BorderRadius.all(Radius.circular(15)),
                       color: Colors.black),
                   height: 65,
-                  width: MediaQuery.of(context).size.width - 70,
                   padding: const EdgeInsets.symmetric(vertical: 15),
                   margin: const EdgeInsets.symmetric(
-                      horizontal: 10, vertical: 10),
+                      horizontal: 50, vertical: 10),
                   alignment: Alignment.center,
                   child: isloading
                       ? loadingWidget

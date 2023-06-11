@@ -4,7 +4,6 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:timer_count_down/timer_controller.dart';
-import 'package:timer_count_down/timer_count_down.dart';
 
 import '../../../flutterduplo.dart';
 import '../models/checkout_response.dart';
@@ -28,14 +27,14 @@ class Transactionstatus extends StatefulWidget {
       : super(key: key);
 
   @override
-  _TransactionstatusState createState() =>
-      _TransactionstatusState(charge, onResponse);
+  TransactionstatusState createState() =>
+      TransactionstatusState(charge, onResponse);
 }
 
-class _TransactionstatusState
+class TransactionstatusState
     extends BaseCheckoutMethodState<Transactionstatus> {
   final Charge _charge;
-  _TransactionstatusState(this._charge, OnResponse<CheckoutResponse> onResponse)
+  TransactionstatusState(this._charge, OnResponse<CheckoutResponse> onResponse)
       : super(onResponse, CheckoutMethod.bank);
   bool ischange = false;
 
@@ -47,7 +46,6 @@ class _TransactionstatusState
     if (widget.verify) {
       initiate();
     }
-
     startloading();
   }
 
@@ -99,7 +97,7 @@ class _TransactionstatusState
       color: Colors.white,
       // elevation: 5.0,
       // borderRadius: BorderRadius.circular(5),
-      child: Container(
+      child: SizedBox(
         height: 400,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -124,7 +122,7 @@ class _TransactionstatusState
               height: 5,
             ),
             Text(widget.method == CheckoutMethod.card?"Processing Card Payment":"Generating Bank Details",
-                style: TextStyle(fontSize: 17, fontWeight: FontWeight.w400)),
+                style: const TextStyle(fontSize: 17, fontWeight: FontWeight.w400)),
           ],
         ),
       ),

@@ -37,7 +37,7 @@ class Topback extends StatelessWidget {
           },
         ),
         const SizedBox(width: 10,),
-        const Text("Change Payment Method", style: TextStyle(fontSize: 14.25, fontWeight: FontWeight.w400),),
+        const Text("Change Payment Method", style: TextStyle(fontSize: 10.25, fontWeight: FontWeight.w400),),
         const Spacer(),
         Image.asset(
           'assets/images/logo.png',
