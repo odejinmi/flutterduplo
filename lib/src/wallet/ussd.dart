@@ -42,9 +42,108 @@ class UssdState extends BaseCheckoutMethodState<Ussd> {
       processing = processing;
     });
   }
+  var accountnumber = "";
+  var amount = 0;
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    accountnumber = widget.charge.account!.number!;
+    amount = widget.charge.amount;
+  }
+
   bool ischange = false;
   var isloading = false;
   var code = "";
+  var bankname = "";
+
+  var banks = [];
+  // var banks = [
+  //   {
+  //     "name": "Access Bank",
+  //     "code": "*901*2*$amount*$accountnumber#"
+  //   },
+  //   {
+  //     "name": "ALAT Bank",
+  //     "code": "*945*$amount*$accountnumber#"
+  //   },
+  //   {
+  //     "name": "Citibank",
+  //     "code": ""
+  //   },
+  //   {
+  //     "name": "Diamond Bank",
+  //     "code": "*426#"
+  //   },
+  //   {
+  //     "name": "Ecobank",
+  //     "code": "*326#"
+  //   },
+  //   {
+  //     "name": "Fidelity Bank",
+  //     "code": "*770*$accountnumber*$amount#"
+  //   },
+  //   {
+  //     "name": "First Bank",
+  //     "code": "*894*$amount*$accountnumber#"
+  //   },
+  //   {
+  //     "name": "First City Monument Bank (FCMB)",
+  //     "code": "*329*$amount*$accountnumber#"
+  //   },
+  //   {
+  //     "name": "Guaranty Trust Bank (GTB)",
+  //     "code": "*737*$amount*$accountnumber#"
+  //   },
+  //   {
+  //     "name": "Heritage Bank",
+  //     "code": "*745*$amount*$accountnumber#"
+  //   },
+  //   {
+  //     "name": "Keystone Bank",
+  //     "code": "*7111*$amount*$accountnumber#"
+  //   },
+  //   {
+  //     "name": "Polaris Bank",
+  //     "code": "*833*$amount*$accountnumber#"
+  //   },
+  //   {
+  //     "name": "Stanbic IBTC Bank",
+  //     "code": "*909*22*$amount*$accountnumber#"
+  //   },
+  //   {
+  //     "name": "Standard Chartered Bank",
+  //     "code": ""
+  //   },
+  //   {
+  //     "name": "Sterling Bank",
+  //     "code": "*822*5*$amount*$accountnumber#"
+  //   },
+  //   {
+  //     "name": "Suntrust Bank",
+  //     "code": ""
+  //   },
+  //   {
+  //     "name": "Union Bank",
+  //     "code": "*826*$amount*$accountnumber#"
+  //   },
+  //   {
+  //     "name": "United Bank for Africa (UBA)",
+  //     "code": "*919*$amount*$accountnumber#"
+  //   },
+  //   {
+  //     "name": "Unity Bank",
+  //     "code": "*7799*$accountnumber*$amount#"
+  //   },
+  //   {
+  //     "name": "Wema Bank",
+  //     "code": "*945*$accountnumber*$amount#"
+  //   },
+  //   {
+  //     "name": "Zenith Bank",
+  //     "code": "*966*$amount*$accountnumber#"
+  //   }
+  // ];
 
   void _onPaymentResponse(CheckoutResponse response) {
     if (kDebugMode) {
@@ -150,7 +249,7 @@ class UssdState extends BaseCheckoutMethodState<Ussd> {
                             height: 10,
                           ),
                           Text(
-                            code.isEmpty?"Please choose your bank to initiate the USSD payment":"Dial the First Bank code generated for you",
+                            code.isEmpty?"Please choose your bank to initiate the USSD payment":"Dial the $bankname code generated for you",
                             style: GoogleFonts.dmSans(
                                 fontSize: 11.07, fontWeight: FontWeight.w300),
                           ),
@@ -162,7 +261,7 @@ class UssdState extends BaseCheckoutMethodState<Ussd> {
                               Align(
                                 alignment: Alignment.center,
                                 child: Image.asset(
-                                  "assets/images/loading${ischange ? "" : "2"}.png",
+                                  "assets/images/loading.gif",
                                   width: 80,
                                   height: 80,
                                   package: 'flutterduplo',
@@ -186,7 +285,7 @@ class UssdState extends BaseCheckoutMethodState<Ussd> {
                                     ),
                                     child: Column(
                                       children: [
-                                        const Text("To complete the payment, please dial the First Bank USSD code provided below on your mobile phone",
+                                        Text("To complete the payment, please dial the $bankname USSD code provided below on your mobile phone",
                                           style: TextStyle( fontSize: 12.65, fontWeight: FontWeight.w300),
                                         ),
                                         const SizedBox(height: 15,),
@@ -253,10 +352,12 @@ class UssdState extends BaseCheckoutMethodState<Ussd> {
                                 ),
                                 child: Row(
                                   children: [
-                                    const Text("Select your Bank Name", style: TextStyle(color: Color(0xffD9D9DD)),),
+                                    Text(code.isNotEmpty?code:"Select your Bank Name", style: const TextStyle(color: Color(0xffD9D9DD)),),
                                     const Spacer(),
                                     IconButton(
-                                        onPressed: (){},
+                                        onPressed: (){
+                                          multicountry();
+                                        },
                                         icon: const Icon(Icons.keyboard_arrow_down, color: Color(0xff575757),))
                                   ],
                                 ),
@@ -265,13 +366,14 @@ class UssdState extends BaseCheckoutMethodState<Ussd> {
                                 height: 40,
                               ),
                               Submitbutton(
-                                buttoncolor: const Color(0x4069ceb8),
+                                buttoncolor: code.isEmpty?const Color(0x4069ceb8): const Color(0xff69ceb8),
                                 name: "Proceed to Pay ${Utils.formatAmount(_charge.amount)}",
                                 press: () {
-                                  startloading();
-                                  setState(() {
+                                  if (code.isNotEmpty) {
+                                    startloading();
                                     isloading = true;
-                                  });
+                                    setState(() {});
+                                  }
                                 },
                               ),
                             ],
@@ -286,6 +388,58 @@ class UssdState extends BaseCheckoutMethodState<Ussd> {
             ],
           ),
         );
+  }
+
+  void multicountry(){
+    showModalBottomSheet(
+      context: context,
+        shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(
+            top: Radius.circular(20.0))),
+        backgroundColor: Colors.white,
+      builder: (context) {
+        return Container(
+          decoration: const BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.vertical(
+                  top: Radius.circular(20))),
+          padding: const EdgeInsets.symmetric(horizontal: 20),
+          // height: 200,
+          child: ListView.builder(
+              itemCount: banks.length,
+              itemBuilder: (BuildContext context, int index) {
+                var bank = banks[index];
+                return GestureDetector(
+                  child: Card(
+                    margin: const EdgeInsets.only(top: 20.0),
+                    clipBehavior: Clip.antiAlias,
+                    color: const Color(0xffF5F5F5),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(15.0),
+                    ),
+                    child: Container(
+                        margin: const EdgeInsets.all(10),
+                        alignment: Alignment.center,
+                        child: Text(
+                          bank['name']!,
+                          style: const TextStyle(
+                            // color: xpro,
+                              fontSize: 17,
+                              fontWeight: FontWeight.bold),
+                        )),
+                  ),
+                  onTap: () {
+                    bankname = bank["name"]!;
+                    code = bank["code"]!;
+                    Navigator.pop(context);
+                    setState(() {
+                    });
+                  },
+                );
+              }),
+        );
+      },
+    );
   }
 
   @override

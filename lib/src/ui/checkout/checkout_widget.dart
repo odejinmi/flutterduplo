@@ -160,14 +160,20 @@ class _CheckoutWidgetState extends BaseState<CheckoutWidget>
     setState(() {
       if (response.method == CheckoutMethod.bank) {
         _isbank = true;
+        _iscard = false;
+        _isussd = false;
       } else if (response.method == CheckoutMethod.ussd) {
         _isussd = true;
+        _isbank = false;
+        _iscard = false;
       } else if (response.method == CheckoutMethod.selectable) {
         _isbank = false;
         _iscard = false;
         _isussd = false;
       } else {
         _iscard = true;
+        _isbank = false;
+        _isussd = false;
       }
     });
   }

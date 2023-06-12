@@ -61,7 +61,7 @@ class _FundwalletState extends BaseCheckoutMethodState<Fundwallet> {
           reference: _charge.reference,
           status: false,
           card: _charge.card?..nullifyNumber(),
-          method: CheckoutMethod.bank,
+          method: method,
           verify: false);
       _charge.account ??= BankAccount(
           Bank(cmddetails['data']['bank_name'], 1),
@@ -243,19 +243,20 @@ class _FundwalletState extends BaseCheckoutMethodState<Fundwallet> {
                     //   onTap: (){
                     //     method = CheckoutMethod.ussd;
                     //     _charge.method = CheckoutMethod.ussd;
-                    //     var response = CheckoutResponse(
-                    //         message: 'loading',
-                    //         reference: _charge.reference,
-                    //         status: false,
-                    //         card: _charge.card?..nullifyNumber(),
-                    //         method: CheckoutMethod.ussd,
-                    //         verify: false);
-                    //     onResponse(response);
+                    //     initiate();
+                    //     // var response = CheckoutResponse(
+                    //     //     message: 'loading',
+                    //     //     reference: _charge.reference,
+                    //     //     status: false,
+                    //     //     card: _charge.card?..nullifyNumber(),
+                    //     //     method: CheckoutMethod.ussd,
+                    //     //     verify: false);
+                    //     // onResponse(response);
                     //   },
                     // ),
-                    const SizedBox(
-                      height: 30,
-                    ),
+                    // const SizedBox(
+                    //   height: 30,
+                    // ),
                   ],
                 ),
               ),
