@@ -24,12 +24,12 @@ class Ussd extends StatefulWidget {
     required this.onResponse}) : super(key: key);
 
   @override
-  _UssdState createState() => _UssdState(charge, onResponse);
+  UssdState createState() => UssdState(charge, onResponse);
 }
 
-class _UssdState extends BaseCheckoutMethodState<Ussd> {
+class UssdState extends BaseCheckoutMethodState<Ussd> {
   final Charge _charge;
-  _UssdState(this._charge, OnResponse<CheckoutResponse> onResponse)
+  UssdState(this._charge, OnResponse<CheckoutResponse> onResponse)
       : super(onResponse, CheckoutMethod.ussd);
 
 
@@ -168,30 +168,30 @@ class _UssdState extends BaseCheckoutMethodState<Ussd> {
                                   package: 'flutterduplo',
                                 ),
                               ),
-                              SizedBox(height: 10,),
+                              const SizedBox(height: 10,),
                               Text("Generating USSD Code",
                                 style: GoogleFonts.dmSans(
-                                    fontSize: 16.55, fontWeight: FontWeight.w600, color: Color(0xff4C4C4C)),
+                                    fontSize: 16.55, fontWeight: FontWeight.w600, color: const Color(0xff4C4C4C)),
                               ),
-                              SizedBox(height: 80,)
+                              const SizedBox(height: 80,)
                             ],
                           ) :code.isNotEmpty?
                               Column(
                                 children: [
                                   Container(
-                                    padding: EdgeInsets.symmetric(vertical: 30,horizontal: 30),
-                                    decoration: BoxDecoration(
+                                    padding: const EdgeInsets.symmetric(vertical: 30,horizontal: 30),
+                                    decoration: const BoxDecoration(
                                       borderRadius: BorderRadius.all(Radius.circular(10)),
                                       color: Color(0xffF7F9FD)
                                     ),
                                     child: Column(
                                       children: [
-                                        Text("To complete the payment, please dial the First Bank USSD code provided below on your mobile phone",
+                                        const Text("To complete the payment, please dial the First Bank USSD code provided below on your mobile phone",
                                           style: TextStyle( fontSize: 12.65, fontWeight: FontWeight.w300),
                                         ),
-                                        SizedBox(height: 15,),
-                                        Text(code, style: TextStyle(fontSize: 31, fontWeight: FontWeight.w700),),
-                                        SizedBox(height: 20,),
+                                        const SizedBox(height: 15,),
+                                        Text(code, style: const TextStyle(fontSize: 31, fontWeight: FontWeight.w700),),
+                                        const SizedBox(height: 20,),
                                         Row(
                                           mainAxisAlignment: MainAxisAlignment.center,
                                           children: [
@@ -200,12 +200,12 @@ class _UssdState extends BaseCheckoutMethodState<Ussd> {
 
                                                 },
                                                 child: Container(
-                                                  padding: EdgeInsets.symmetric(horizontal: 5, vertical: 5),
-                                                  decoration: BoxDecoration(
+                                                  padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 5),
+                                                  decoration: const BoxDecoration(
                                                       color: Color(0xff69CEB8),
                                                       borderRadius: BorderRadius.all(Radius.circular(5))
                                                   ),
-                                                  child: Row(
+                                                  child: const Row(
                                                     mainAxisSize: MainAxisSize.min,
                                                     children: [
                                                       Icon(
@@ -216,20 +216,20 @@ class _UssdState extends BaseCheckoutMethodState<Ussd> {
                                                       SizedBox(width: 5,),
                                                       Text(
                                                         "DIAL",
-                                                        style: const TextStyle(fontSize: 7.59, color: Colors.white, fontWeight: FontWeight.w600),
+                                                        style: TextStyle(fontSize: 7.59, color: Colors.white, fontWeight: FontWeight.w600),
                                                       ),
                                                     ],
                                                   ),
                                                 )
                                             ),
-                                            SizedBox(width: 10,),
+                                            const SizedBox(width: 10,),
                                             Copy(quote: code)
                                           ],
                                         ),
                                       ],
                                     ),
                                   ),
-                                  SizedBox(height: 15,),
+                                  const SizedBox(height: 15,),
                                   Submitbutton(
                                     name: "I have dial the USSD Code",
                                     press: () {
@@ -265,7 +265,7 @@ class _UssdState extends BaseCheckoutMethodState<Ussd> {
                                 height: 40,
                               ),
                               Submitbutton(
-                                buttoncolor: Color(0x4069ceb8),
+                                buttoncolor: const Color(0x4069ceb8),
                                 name: "Proceed to Pay ${Utils.formatAmount(_charge.amount)}",
                                 press: () {
                                   startloading();
@@ -286,6 +286,23 @@ class _UssdState extends BaseCheckoutMethodState<Ussd> {
             ],
           ),
         );
+  }
+
+  @override
+  getPopReturnValue() {
+    return _getResponse();
+  }
+
+  CheckoutResponse _getResponse() {
+    CheckoutResponse? response = _response;
+    if (response == null) {
+      response = CheckoutResponse.defaults();
+      response.method = CheckoutMethod.ussd;
+    }
+    if (response.card != null) {
+      response.card!.nullifyNumber();
+    }
+    return response;
   }
 
   _showProcessingError() {

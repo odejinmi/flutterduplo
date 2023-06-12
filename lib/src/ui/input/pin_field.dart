@@ -39,7 +39,7 @@ class _PinFieldState extends State<PinField> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 10),
+      // margin: const EdgeInsets.symmetric(horizontal: 10),
       // child: TextField(
       //   keyboardType: TextInputType.number,
       //   textAlign: TextAlign.center,

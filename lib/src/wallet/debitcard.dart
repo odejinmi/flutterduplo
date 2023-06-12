@@ -10,7 +10,6 @@ import '../../flutterduplo.dart';
 import '../api/transaction/cardtransactionmanager.dart';
 import '../common/card_utils.dart';
 import '../common/utils.dart';
-import '../constant/constant.dart';
 import '../constant/submitbutton.dart';
 // import '../models/card.dart';
 // import '../models/charge.dart';
@@ -37,12 +36,12 @@ class Debitcard extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  _DebitcardState createState() => _DebitcardState(charge, onResponse);
+  DebitcardState createState() => DebitcardState(charge, onResponse);
 }
 
-class _DebitcardState extends BaseCheckoutMethodState<Debitcard> {
+class DebitcardState extends BaseCheckoutMethodState<Debitcard> {
   final Charge _charge;
-  _DebitcardState(this._charge, OnResponse<CheckoutResponse> onResponse)
+  DebitcardState(this._charge, OnResponse<CheckoutResponse> onResponse)
       : super(onResponse, CheckoutMethod.bank);
   TextEditingController expireController = TextEditingController();
   TextEditingController cvvController = TextEditingController();
@@ -144,7 +143,7 @@ class _DebitcardState extends BaseCheckoutMethodState<Debitcard> {
             // elevation: 5.0,
             // borderRadius: BorderRadius.circular(5),
             child: Padding(
-              padding: const EdgeInsets.all(20.0),
+              padding: const EdgeInsets.all(5.0),
               child: isLoading
                   ? Material(
                     color: Colors.white,
@@ -152,12 +151,12 @@ class _DebitcardState extends BaseCheckoutMethodState<Debitcard> {
                     borderRadius: BorderRadius.circular(5),
                     child: Transactionstatus(
                       method: CheckoutMethod.card,
-                charge: _charge,
-                secretkey: widget.secretKey,
-                verify: isverify,
-                // service: widget.bankService,
-                onResponse: _onPaymentResponse,
-              ),
+                      charge: _charge,
+                      secretkey: widget.secretKey,
+                      verify: isverify,
+                      // service: widget.bankService,
+                      onResponse: _onPaymentResponse,
+                    ),
                   )
                   : Column(
                     children: [
@@ -173,7 +172,7 @@ class _DebitcardState extends BaseCheckoutMethodState<Debitcard> {
                             ),),
                         ),
                       ),
-                      SizedBox(height: 30,),
+                      const SizedBox(height: 30,),
                       Material(
                         color: Colors.white,
                         elevation: 5.0,
@@ -332,6 +331,23 @@ class _DebitcardState extends BaseCheckoutMethodState<Debitcard> {
                   ),
             ),
           );
+  }
+
+  @override
+  getPopReturnValue() {
+    return _getResponse();
+  }
+
+  CheckoutResponse _getResponse() {
+    CheckoutResponse? response = _response;
+    if (response == null) {
+      response = CheckoutResponse.defaults();
+      response.method = CheckoutMethod.card;
+    }
+    if (response.card != null) {
+      response.card!.nullifyNumber();
+    }
+    return response;
   }
 
   Future<void> chargecard() async {

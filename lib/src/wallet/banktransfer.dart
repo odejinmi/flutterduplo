@@ -50,7 +50,6 @@ class _BanktransferState extends BaseCheckoutMethodState<Banktransfer> {
       processing = processing;
     });
   }
-  bool ischange = false;
   var isloading = false;
 
   void _onPaymentResponse(CheckoutResponse response) {
@@ -82,15 +81,6 @@ class _BanktransferState extends BaseCheckoutMethodState<Banktransfer> {
       _paymentError = value;
       _paymentSuccessful = false;
       _onProcessingChange(false);
-    });
-  }
-
-  void startloading() {
-    Future.delayed(const Duration(milliseconds: 500), () {
-      setState(() {
-        ischange = !ischange;
-        startloading();
-      });
     });
   }
 
@@ -167,7 +157,7 @@ class _BanktransferState extends BaseCheckoutMethodState<Banktransfer> {
                                     child: Text(
                                       "Regenerate",
                                       style: GoogleFonts.dmSans(
-                                        color: Color(0xff40B198),
+                                        color: const Color(0xff40B198),
                                           fontSize: 12, fontWeight: FontWeight.w500),
                                     ),
                                   ),
@@ -197,7 +187,7 @@ class _BanktransferState extends BaseCheckoutMethodState<Banktransfer> {
                                               quote: _charge.amount.toString(),
                                             ),
                                             const SizedBox(
-                                              width: 20,
+                                              width: 10,
                                             ),
                                             Text(
                                               Utils.formatAmount(_charge.amount),
@@ -239,7 +229,7 @@ class _BanktransferState extends BaseCheckoutMethodState<Banktransfer> {
                                               quote: _charge.account!.number!,
                                             ),
                                             const SizedBox(
-                                              width: 20,
+                                              width: 10,
                                             ),
                                             Text(
                                               _charge.account!.number!,
@@ -276,25 +266,23 @@ class _BanktransferState extends BaseCheckoutMethodState<Banktransfer> {
                                     height: 40,
                                   ),
                                   !isloading ?
-                                  Container(
-                                    child: Column(
-                                      children: [
-                                        Text("Use this account for this transaction only. Account expires in 29 minutes",
-                                          style: GoogleFonts.dmSans(
-                                              fontSize: 11.25, fontWeight: FontWeight.w300),
-                                        ),
-                                        const SizedBox(
-                                          height: 20,
-                                        ),
-                                        // const Spacer(),
-                                        Submitbutton(
-                                          name: "I have made this bank transfer",
-                                          press: () {
-                                            initiate();
-                                          },
-                                        ),
-                                      ],
-                                    ),
+                                  Column(
+                                    children: [
+                                      Text("Use this account for this transaction only. Account expires in 29 minutes",
+                                        style: GoogleFonts.dmSans(
+                                            fontSize: 11.25, fontWeight: FontWeight.w300),
+                                      ),
+                                      const SizedBox(
+                                        height: 20,
+                                      ),
+                                      // const Spacer(),
+                                      Submitbutton(
+                                        name: "I have made this bank transfer",
+                                        press: () {
+                                          initiate();
+                                        },
+                                      ),
+                                    ],
                                   ):
                                   Container(
                                     child: Column(
@@ -305,13 +293,13 @@ class _BanktransferState extends BaseCheckoutMethodState<Banktransfer> {
                                             Align(
                                               alignment: Alignment.center,
                                               child: Image.asset(
-                                                "assets/images/loading${ischange ? "" : "2"}.png",
+                                                "assets/images/loading.gif",
                                                 width: 40,
                                                 height: 40,
                                                 package: 'flutterduplo',
                                               ),
                                             ),
-                                            SizedBox(width: 10,),
+                                            const SizedBox(width: 10,),
                                             Text("Confirming Payment",
                                               style: GoogleFonts.dmSans(
                                                   fontSize: 14.62, fontWeight: FontWeight.w600),
@@ -385,17 +373,30 @@ class _BanktransferState extends BaseCheckoutMethodState<Banktransfer> {
         },
       );
 
+  @override
+  getPopReturnValue() {
+    return _getResponse();
+  }
+
+  CheckoutResponse _getResponse() {
+    CheckoutResponse? response = _response;
+    if (response == null) {
+      response = CheckoutResponse.defaults();
+      response.method = CheckoutMethod.bank;
+    }
+    if (response.card != null) {
+      response.card!.nullifyNumber();
+    }
+    return response;
+  }
+
   Future<void> initiate() async {
     String res;
-    startloading();
     setState(() {
       isloading = true;
     });
     res = await verifytransaction(_charge.reference, widget.secretkey);
     var cmddetails = jsonDecode(res);
-    setState(() {
-      isloading = false;
-    });
     if (cmddetails['status']) {
       if (cmddetails['data']["status"] == "pending") {
         dynamic result;
@@ -406,6 +407,9 @@ class _BanktransferState extends BaseCheckoutMethodState<Banktransfer> {
         }
         return result;
       } else {
+        setState(() {
+          isloading = false;
+        });
         if (cmddetails['data']["status"] == "success") {
           return _onPaymentResponse(CheckoutResponse(
               message: "Payment Success",
@@ -444,9 +448,6 @@ class _BanktransferState extends BaseCheckoutMethodState<Banktransfer> {
     String res;
     res = await verifytransaction(_charge.reference, widget.secretkey);
     var cmddetails = jsonDecode(res);
-    setState(() {
-      isloading = false;
-    });
     if (cmddetails['status']) {
       if (cmddetails['data']["status"] == "pending") {
         dynamic result;
@@ -457,6 +458,9 @@ class _BanktransferState extends BaseCheckoutMethodState<Banktransfer> {
         }
         return result;
       } else {
+        setState(() {
+          isloading = false;
+        });
         if (cmddetails['data']["status"] == "success") {
           return _onPaymentResponse(CheckoutResponse(
               message: "Payment Success",

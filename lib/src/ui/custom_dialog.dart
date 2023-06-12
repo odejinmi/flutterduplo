@@ -63,11 +63,11 @@ class CustomAlertDialog extends StatelessWidget {
                     vertical: 20.0,
                   ),
                   child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: children),
                 )
               : Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     // Align(
                     //   alignment: Alignment.topRight,
@@ -83,6 +83,8 @@ class CustomAlertDialog extends StatelessWidget {
                     // ),
                     Expanded(
                         child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: children,
                     )),
                   ],

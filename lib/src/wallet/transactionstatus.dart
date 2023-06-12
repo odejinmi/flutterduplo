@@ -1,5 +1,6 @@
 // ignore_for_file: library_private_types_in_public_api, no_logic_in_create_state
 
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
@@ -40,19 +41,19 @@ class TransactionstatusState
 
   final CountdownController _controller = CountdownController(autoStart: true);
 
+  Timer? countdownTimer;
+
   @override
   void initState() {
     super.initState();
     if (widget.verify) {
       initiate();
     }
-    startloading();
   }
 
   void initiate() async {
     String res;
 
-    startloading();
     res = await verifytransaction(_charge.reference, widget.secretkey);
     var cmddetails = jsonDecode(res);
     if (cmddetails['status']) {
@@ -76,14 +77,6 @@ class TransactionstatusState
     }
   }
 
-  void startloading() {
-    Future.delayed(const Duration(milliseconds: 500), () {
-      setState(() {
-        ischange = !ischange;
-        startloading();
-      });
-    });
-  }
 
   @override
   void dispose() {
@@ -105,7 +98,7 @@ class TransactionstatusState
             Align(
               alignment: Alignment.center,
               child: Image.asset(
-                "assets/images/loading${ischange ? "" : "2"}.png",
+                "assets/images/loading.gif",
                 width: 126,
                 height: 126,
                 package: 'flutterduplo',

@@ -86,27 +86,30 @@ class _FundwalletState extends BaseCheckoutMethodState<Fundwallet> {
   @override
   Widget buildAnimatedChild() {
     return isloading
-        ? Material(
-          color: Colors.white,
-          elevation: 5.0,
-          borderRadius: BorderRadius.circular(5),
-          child: Transactionstatus(
-              method: method,
-              charge: _charge,
-              secretkey: widget.secretKey,
-              verify: false,
-              // service: widget.bankService,
-              onResponse: _onPaymentResponse,
-            ),
+        ? Center(
+          child: Material(
+            color: Colors.white,
+            elevation: 5.0,
+            borderRadius: BorderRadius.circular(5),
+            child: Transactionstatus(
+                method: method,
+                charge: _charge,
+                secretkey: widget.secretKey,
+                verify: false,
+                // service: widget.bankService,
+                onResponse: _onPaymentResponse,
+              ),
+          ),
         )
         : Center(
-            child: Material(
+            child: Card(
               color: Colors.white,
               elevation: 5.0,
-              borderRadius: BorderRadius.circular(5),
+              // borderRadius: BorderRadius.circular(5),
               child: Container(
                 padding: const EdgeInsets.symmetric(horizontal: 10),
                 child: Column(
+                  mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Padding(

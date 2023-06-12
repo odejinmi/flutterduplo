@@ -95,6 +95,8 @@ class _CheckoutWidgetState extends BaseState<CheckoutWidget>
               padding:
                   const EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
               child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
                   _iscard
                       ? Debitcard(
