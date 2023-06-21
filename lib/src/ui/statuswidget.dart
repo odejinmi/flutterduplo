@@ -1,6 +1,8 @@
 import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter_to_pdf/flutter_to_pdf.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:open_filex/open_filex.dart';
@@ -31,11 +33,13 @@ class Statuswidget extends StatelessWidget {
     default:
       method = "Ussd";
     }
+    final GlobalKey globalKey = GlobalKey();
     return Container(
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
           ExportFrame(
+            key: globalKey,
             frameId: 'someFrameId',
             exportDelegate: exportDelegate,
             child: Container(
@@ -280,6 +284,17 @@ class Statuswidget extends StatelessWidget {
     debugPrint("type=${result.type}  message=${result.message}");
   }
 
-
+  // Future<Uint8List> captureWidget() async {
+  //
+  //   final RenderRepaintBoundary boundary = globalKey.currentContext.findRenderObject();
+  //
+  //   final ui.Image image = await boundary.toImage();
+  //
+  //   final ByteData byteData = await image.toByteData(format: ui.ImageByteFormat.png);
+  //
+  //   final Uint8List pngBytes = byteData.buffer.asUint8List();
+  //
+  //   return pngBytes;
+  // }
 
 }
