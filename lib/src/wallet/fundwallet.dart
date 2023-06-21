@@ -219,44 +219,43 @@ class _FundwalletState extends BaseCheckoutMethodState<Fundwallet> {
                       },
                     ),
 
-                    // const SizedBox(height: 20),
-                    // const Divider(height: 1),
-                    // const SizedBox(height: 20),
-                    // GestureDetector(
-                    //   child: Container(
-                    //     margin: EdgeInsets.symmetric(horizontal: 20),
-                    //     child: Row(
-                    //       children: [
-                    //         Image.asset(
-                    //           'assets/images/ussd.png',
-                    //           width: 37,
-                    //           height: 37,
-                    //           package: 'flutterduplo',
-                    //         ),
-                    //         SizedBox(width: 30,),
-                    //         Text("Pay with USSD"),
-                    //         Spacer(),
-                    //         Icon(Icons.arrow_forward_ios, color: Color(0xff8E959D), size: 14,)
-                    //       ],
-                    //     ),
-                    //   ),
-                    //   onTap: (){
-                    //     method = CheckoutMethod.ussd;
-                    //     _charge.method = CheckoutMethod.ussd;
-                    //     initiate();
-                    //     // var response = CheckoutResponse(
-                    //     //     message: 'loading',
-                    //     //     reference: _charge.reference,
-                    //     //     status: false,
-                    //     //     card: _charge.card?..nullifyNumber(),
-                    //     //     method: CheckoutMethod.ussd,
-                    //     //     verify: false);
-                    //     // onResponse(response);
-                    //   },
-                    // ),
-                    // const SizedBox(
-                    //   height: 30,
-                    // ),
+                    const SizedBox(height: 20),
+                    const Divider(height: 1),
+                    const SizedBox(height: 20),
+                    GestureDetector(
+                      child: Container(
+                        margin: const EdgeInsets.symmetric(horizontal: 20),
+                        child: Row(
+                          children: [
+                            Image.asset(
+                              'assets/images/ussd.png',
+                              width: 37,
+                              height: 37,
+                              package: 'flutterduplo',
+                            ),
+                            const SizedBox(width: 30,),
+                            const Text("Pay with USSD"),
+                            const Spacer(),
+                            const Icon(Icons.arrow_forward_ios, color: Color(0xff8E959D), size: 14,)
+                          ],
+                        ),
+                      ),
+                      onTap: (){
+                        method = CheckoutMethod.ussd;
+                        _charge.method = CheckoutMethod.ussd;
+                        var response = CheckoutResponse(
+                            message: 'loading',
+                            reference: _charge.reference,
+                            status: false,
+                            card: _charge.card?..nullifyNumber(),
+                            method: CheckoutMethod.ussd,
+                            verify: false);
+                        onResponse(response);
+                      },
+                    ),
+                    const SizedBox(
+                      height: 30,
+                    ),
                   ],
                 ),
               ),

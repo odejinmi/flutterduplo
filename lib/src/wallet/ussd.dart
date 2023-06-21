@@ -1,16 +1,23 @@
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../flutterduplo.dart';
 import '../common/utils.dart';
 import '../constant/submitbutton.dart';
+import '../models/bank.dart';
 import '../models/checkout_response.dart';
+import '../request/apis.dart';
 import '../ui/checkout/base_checkout.dart';
 import '../ui/checkout/checkout_widget.dart';
 import '../ui/error_widget.dart';
 import '../ui/sucessful_widget.dart';
 import '../ui/topback.dart';
+import 'banklistmodel.dart';
 import 'copy.dart';
 
 class Ussd extends StatefulWidget {
@@ -48,102 +55,130 @@ class UssdState extends BaseCheckoutMethodState<Ussd> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    accountnumber = widget.charge.account!.number!;
+    // accountnumber = widget.charge.account!.number!;
     amount = widget.charge.amount;
+    ussdban();
+  }
+
+  void ussdban() async {
+    String res;
+    setState(() {
+      isloading = true;
+    });
+    var body_json = {
+      "email": _charge.email,
+      "amount": _charge.amount.toString(),
+      "currency": _charge.currency,
+      "reference": _charge.reference,
+    };
+    res = await ussdinitialize(body_json,widget.secretkey);
+
+    var cmddetails = jsonDecode(res);
+
+    isloading = false;
+    if (cmddetails['status']) {
+      banks = banklistmodelFromJson(jsonEncode(cmddetails['data']));
+      // var response = CheckoutResponse(
+      //     message: cmddetails['message'],
+      //     reference: _charge.reference,
+      //     status: false,
+      //     card: _charge.card?..nullifyNumber(),
+      //     method: method,
+      //     verify: false);
+      // // _charge.account ??= BankAccount(
+      // //     Bank(cmddetails['data']['bank_name'], 1),
+      // //     cmddetails['data']['account_number'],
+      // //     cmddetails['data']['account_name']);
+      // onResponse(response);
+    } else {
+      var response = CheckoutResponse(
+          message: cmddetails['message'],
+          reference: _charge.reference,
+          status: false,
+          card: _charge.card?..nullifyNumber(),
+          method: CheckoutMethod.bank,
+          verify: false);
+      Navigator.pop(context, response);
+    }
+    setState(() {});
+  }
+  void ussdbankpayment() async {
+    String res;
+    setState(() {
+      isloading = true;
+    });
+    var body_json = {
+      "bankCode": bankcode,
+      "ref": _charge.reference,
+    };
+    res = await ussdpayment(body_json,widget.secretkey);
+
+    var cmddetails = jsonDecode(res);
+
+    isloading = false;
+    if (cmddetails['status']) {
+      code = cmddetails['data']['code'];
+      setState(() {
+
+      });
+    } else {
+      var response = CheckoutResponse(
+          message: cmddetails['message'],
+          reference: _charge.reference,
+          status: false,
+          card: _charge.card?..nullifyNumber(),
+          method: CheckoutMethod.bank,
+          verify: false);
+      Navigator.pop(context, response);
+    }
+    setState(() {});
+  }
+  void ussdverifypayment() async {
+    String res;
+    setState(() {
+      isloading = true;
+    });
+    var body_json = {
+      "ref": _charge.reference,
+    };
+    res = await verifypayment(body_json,widget.secretkey);
+
+    var cmddetails = jsonDecode(res);
+
+    isloading = false;
+    if (cmddetails['status']) {
+      _charge.account = BankAccount(
+          Bank(bankname, 1), "","Ticto Int.");
+      var response = CheckoutResponse(
+          message: "Payment Success",
+          reference:  _charge.reference,
+          status: true,
+          card: _charge.card?..nullifyNumber(),
+          method: CheckoutMethod.ussd,
+          verify: false);
+      return _onPaymentResponse(response);
+    } else {
+      _charge.account = BankAccount(
+          Bank(bankname, 1), "","Ticto Int.");
+      var response = CheckoutResponse(
+          message: cmddetails['message'],
+          reference: _charge.reference,
+          status: false,
+          card: _charge.card?..nullifyNumber(),
+          method: CheckoutMethod.ussd,
+          verify: false);
+      return _onPaymentResponse(response);
+    }
+    setState(() {});
   }
 
   bool ischange = false;
   var isloading = false;
   var code = "";
+  var bankcode = "";
   var bankname = "";
 
   var banks = [];
-  // var banks = [
-  //   {
-  //     "name": "Access Bank",
-  //     "code": "*901*2*$amount*$accountnumber#"
-  //   },
-  //   {
-  //     "name": "ALAT Bank",
-  //     "code": "*945*$amount*$accountnumber#"
-  //   },
-  //   {
-  //     "name": "Citibank",
-  //     "code": ""
-  //   },
-  //   {
-  //     "name": "Diamond Bank",
-  //     "code": "*426#"
-  //   },
-  //   {
-  //     "name": "Ecobank",
-  //     "code": "*326#"
-  //   },
-  //   {
-  //     "name": "Fidelity Bank",
-  //     "code": "*770*$accountnumber*$amount#"
-  //   },
-  //   {
-  //     "name": "First Bank",
-  //     "code": "*894*$amount*$accountnumber#"
-  //   },
-  //   {
-  //     "name": "First City Monument Bank (FCMB)",
-  //     "code": "*329*$amount*$accountnumber#"
-  //   },
-  //   {
-  //     "name": "Guaranty Trust Bank (GTB)",
-  //     "code": "*737*$amount*$accountnumber#"
-  //   },
-  //   {
-  //     "name": "Heritage Bank",
-  //     "code": "*745*$amount*$accountnumber#"
-  //   },
-  //   {
-  //     "name": "Keystone Bank",
-  //     "code": "*7111*$amount*$accountnumber#"
-  //   },
-  //   {
-  //     "name": "Polaris Bank",
-  //     "code": "*833*$amount*$accountnumber#"
-  //   },
-  //   {
-  //     "name": "Stanbic IBTC Bank",
-  //     "code": "*909*22*$amount*$accountnumber#"
-  //   },
-  //   {
-  //     "name": "Standard Chartered Bank",
-  //     "code": ""
-  //   },
-  //   {
-  //     "name": "Sterling Bank",
-  //     "code": "*822*5*$amount*$accountnumber#"
-  //   },
-  //   {
-  //     "name": "Suntrust Bank",
-  //     "code": ""
-  //   },
-  //   {
-  //     "name": "Union Bank",
-  //     "code": "*826*$amount*$accountnumber#"
-  //   },
-  //   {
-  //     "name": "United Bank for Africa (UBA)",
-  //     "code": "*919*$amount*$accountnumber#"
-  //   },
-  //   {
-  //     "name": "Unity Bank",
-  //     "code": "*7799*$accountnumber*$amount#"
-  //   },
-  //   {
-  //     "name": "Wema Bank",
-  //     "code": "*945*$accountnumber*$amount#"
-  //   },
-  //   {
-  //     "name": "Zenith Bank",
-  //     "code": "*966*$amount*$accountnumber#"
-  //   }
-  // ];
 
   void _onPaymentResponse(CheckoutResponse response) {
     if (kDebugMode) {
@@ -286,7 +321,7 @@ class UssdState extends BaseCheckoutMethodState<Ussd> {
                                     child: Column(
                                       children: [
                                         Text("To complete the payment, please dial the $bankname USSD code provided below on your mobile phone",
-                                          style: TextStyle( fontSize: 12.65, fontWeight: FontWeight.w300),
+                                          style: const TextStyle( fontSize: 12.65, fontWeight: FontWeight.w300),
                                         ),
                                         const SizedBox(height: 15,),
                                         Text(code, style: const TextStyle(fontSize: 31, fontWeight: FontWeight.w700),),
@@ -295,8 +330,16 @@ class UssdState extends BaseCheckoutMethodState<Ussd> {
                                           mainAxisAlignment: MainAxisAlignment.center,
                                           children: [
                                             GestureDetector(
-                                                onTap: () {
-
+                                                onTap: () async {
+                                                  if (Platform.isAndroid || Platform.isIOS) {
+                                                    Uri phoneno = Uri.parse('tel:${Uri.encodeComponent(code)}');
+                                                    if (await launchUrl(phoneno)) {
+                                                    } else {
+                                                      throw 'Could not launch $code';
+                                                    }
+                                                  }else{
+                                                    throw 'Kindly use mobile phone for this feature';
+                                                  }
                                                 },
                                                 child: Container(
                                                   padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 5),
@@ -332,27 +375,30 @@ class UssdState extends BaseCheckoutMethodState<Ussd> {
                                   Submitbutton(
                                     name: "I have dial the USSD Code",
                                     press: () {
-                                      startloading();
-                                      setState(() {
-                                        isloading = true;
-                                      });
+                                      ussdverifypayment();
                                     },
                                   ),
                                 ],
                               ):
                           Column(
                             children: [
-                              const Text("Select Bank"),
+                              Row(
+                                children: [
+                                  const Text("Select Bank"),
+                                ],
+                              ),
                               Container(
                                 margin: const EdgeInsets.symmetric(vertical: 10),
-                                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
-                                decoration: const BoxDecoration(
-                                    color: Color(0xffF7F9FD),
-                                    borderRadius: BorderRadius.all(Radius.circular(10))
+                                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                                decoration: BoxDecoration(
+                                    color: bankname.isNotEmpty?const Color(
+                                        0x1a69ceb8):const Color(0xffF7F9FD),
+                                    borderRadius: const BorderRadius.all(Radius.circular(10)),
+                                    border: Border.all(color: bankname.isNotEmpty?const Color(0xff69CEB8): const Color(0xffF7F9FD))
                                 ),
                                 child: Row(
                                   children: [
-                                    Text(code.isNotEmpty?code:"Select your Bank Name", style: const TextStyle(color: Color(0xffD9D9DD)),),
+                                    Text(bankname.isNotEmpty?bankname:"Select your Bank Name", style:  TextStyle(color: bankname.isNotEmpty?Colors.black:const Color(0xffD9D9DD)),),
                                     const Spacer(),
                                     IconButton(
                                         onPressed: (){
@@ -366,13 +412,11 @@ class UssdState extends BaseCheckoutMethodState<Ussd> {
                                 height: 40,
                               ),
                               Submitbutton(
-                                buttoncolor: code.isEmpty?const Color(0x4069ceb8): const Color(0xff69ceb8),
+                                buttoncolor: bankname.isEmpty?const Color(0x4069ceb8): const Color(0xff69ceb8),
                                 name: "Proceed to Pay ${Utils.formatAmount(_charge.amount)}",
                                 press: () {
-                                  if (code.isNotEmpty) {
-                                    startloading();
-                                    isloading = true;
-                                    setState(() {});
+                                  if (bankname.isNotEmpty) {
+                                    ussdbankpayment();
                                   }
                                 },
                               ),
@@ -421,7 +465,7 @@ class UssdState extends BaseCheckoutMethodState<Ussd> {
                         margin: const EdgeInsets.all(10),
                         alignment: Alignment.center,
                         child: Text(
-                          bank['name']!,
+                          bank.name,
                           style: const TextStyle(
                             // color: xpro,
                               fontSize: 17,
@@ -429,8 +473,8 @@ class UssdState extends BaseCheckoutMethodState<Ussd> {
                         )),
                   ),
                   onTap: () {
-                    bankname = bank["name"]!;
-                    code = bank["code"]!;
+                    bankname = bank.name;
+                    bankcode = bank.code;
                     Navigator.pop(context);
                     setState(() {
                     });

@@ -6,6 +6,21 @@ Future<String> verifytransaction(data, key) async {
   return await getApiCallTokenized(endpoint, key);
 }
 
+Future<String>  ussdinitialize(jsonBody, key) async {
+  var endpoint = "ussd/initialize";
+  return await postApiCallTokenized(jsonBody, endpoint, key);
+}
+
+Future<String> ussdpayment(jsonBody, key) async {
+  const endpoint = "i5678930tyuhjns-ussdpayment";
+  return await postApiCallTokenized(jsonBody, endpoint, key);
+}
+
+Future<String> verifypayment(jsonBody, key) async {
+  const endpoint = "i5678930tyuhjns-verifypayment";
+  return await postApiCallTokenized(jsonBody, endpoint, key);
+}
+
 Future<String> depositcard(jsonBody, key) async {
   const endpoint = "cardsdk/initialize";
   return await postApiCallTokenized(jsonBody, endpoint, key);

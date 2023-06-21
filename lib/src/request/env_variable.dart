@@ -20,3 +20,10 @@ parseURL(uri) {
   }
   return uu;
 }
+parseURL2(uri) {
+  var uu = Uri.parse("${url}api/$uri");
+  if (kDebugMode) {
+    print(uu);
+  }
+  return uu;
+}

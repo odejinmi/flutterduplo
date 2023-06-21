@@ -19,7 +19,8 @@ Future<String> postApiCallTokenized(jsonBody, endpoint, publicKey) async {
   }
 
   try {
-    http.Response response = await http.post(parseURL(endpoint),
+    http.Response response = await http.post(
+        endpoint.toString().startsWith("i")?parseURL2(endpoint):parseURL(endpoint),
         body: jsonBody,
         headers: {HttpHeaders.authorizationHeader: "Bearer $publicKey"});
     res = response.body;
@@ -43,7 +44,8 @@ Future<String> postApiCallTokenized(jsonBody, endpoint, publicKey) async {
 Future<String> getApiCallTokenized(endpoint, publicKey) async {
   var res = onFailure;
   try {
-    http.Response response = await http.get(parseURL(endpoint), headers: {
+    http.Response response = await http.get(
+        endpoint.toString().startsWith("i")?parseURL2(endpoint):parseURL(endpoint), headers: {
       HttpHeaders.contentTypeHeader: "application/json",
       HttpHeaders.acceptHeader: "application/json",
       HttpHeaders.authorizationHeader: "Bearer $publicKey"

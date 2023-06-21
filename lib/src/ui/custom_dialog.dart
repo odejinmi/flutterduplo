@@ -52,7 +52,7 @@ class CustomAlertDialog extends StatelessWidget {
 
   Widget buildContent(context, List<Widget> children) {
     Widget widget = Material(
-      color: Theme.of(context).scaffoldBackgroundColor,
+      color: const Color(0xffF5F5F5),
       // ? Colors.white
       // : Colors.grey,
       child: Container(

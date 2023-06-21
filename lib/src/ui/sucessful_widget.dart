@@ -75,7 +75,7 @@ class _SuccessfulWidgetState extends State<SuccessfulWidget>
   Widget build(BuildContext context) {
     final accentColor = Theme.of(context).colorScheme.secondary;
     return Material(
-      color: Colors.white,
+      color: const Color(0xffF5F5F5),
       // elevation: 5.0,
       // borderRadius: BorderRadius.circular(5),
       child: Column(
@@ -93,7 +93,6 @@ class _SuccessfulWidgetState extends State<SuccessfulWidget>
                 ),),
             ),
           ),
-          const SizedBox(height: 30,),
           Statuswidget(
             title: "Payment Successful",
               image: 'assets/images/successbutton.png',

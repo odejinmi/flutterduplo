@@ -44,7 +44,7 @@ class ErrorPage extends StatelessWidget {
     var buttonMargin =
         isCardPayment ? const SizedBox(height: 5.0) : emptyContainer;
     return Material(
-      color: Colors.white,
+      color: const Color(0xffF5F5F5),
       // elevation: 5.0,
       // borderRadius: BorderRadius.circular(5),
       child: Column(
@@ -62,7 +62,6 @@ class ErrorPage extends StatelessWidget {
                 ),),
             ),
           ),
-          const SizedBox(height: 30,),
           Statuswidget(
             title: "Payment Failed",
             image: 'assets/images/errorbutton.png',
