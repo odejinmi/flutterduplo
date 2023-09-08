@@ -67,7 +67,7 @@ class UssdState extends BaseCheckoutMethodState<Ussd> {
     });
     var body_json = {
       "email": _charge.email,
-      "amount": _charge.amount.toString(),
+      "amount": (_charge.amount ~/ 100).toString(),
       "currency": _charge.currency,
       "reference": _charge.reference,
     };

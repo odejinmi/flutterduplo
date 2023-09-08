@@ -1,7 +1,7 @@
 name: flutterduplo
-description: A new Flutter project.
+description: A Flutter plugin for making payments via Duplo Payment Gateway. Completely supports all platforms.
 version: 0.0.1
-homepage:
+homepage: https://github.com/odejinmi/flutterduplo
 
 environment:
   sdk: '>=3.0.2 <4.0.0'
@@ -13,24 +13,24 @@ dependencies:
   intl: ^0.18.1
   encrypt: ^5.0.1
   gainer_crypto: ^0.0.6
-  http: ^1.0.0
-  platform_info: ^4.0.0
-  package_info_plus: ^4.0.2
-  device_info_plus: ^9.0.2
-  webview_flutter: ^4.2.2
+  http: ^1.1.0
+  platform_info: ^4.0.2
+  package_info_plus: ^4.1.0
+  device_info_plus: ^9.0.3
+  webview_flutter: ^4.2.4
   timer_count_down: ^2.2.2
   clipboard: ^0.1.3
   google_fonts: ^5.1.0
-  pin_code_fields: ^7.4.0
-  url_launcher: ^6.1.11
+  pin_code_fields: ^8.0.1
+  url_launcher: ^6.1.14
   flutter_to_pdf: ^0.1.1
-  path_provider: ^2.0.15
+  path_provider: ^2.1.1
   open_filex: ^4.3.2
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  flutter_lints: ^2.0.1
+  flutter_lints: ^2.0.3
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
