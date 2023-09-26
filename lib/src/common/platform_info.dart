@@ -16,7 +16,7 @@ class PlatformInfo {
   // ignore: unused_field
   final String userAgent;
   // ignore: unused_field
-  final String DuploBuild;
+  final String duploBuild;
   // ignore: unused_field
   final String deviceId;
 
@@ -49,21 +49,21 @@ class PlatformInfo {
     String userAgent = "${platform}_Duplo_$pluginVersion";
     return PlatformInfo._(
       userAgent: userAgent,
-      DuploBuild: pluginVersion,
+      duploBuild: pluginVersion,
       deviceId: deviceId,
     );
   }
 
   PlatformInfo._({
     required String userAgent,
-    required String DuploBuild,
+    required String duploBuild,
     required String deviceId,
   })  : userAgent = userAgent,
-        DuploBuild = DuploBuild,
+        duploBuild = duploBuild,
         deviceId = deviceId;
 
   @override
   String toString() {
-    return '[userAgent = $userAgent, DuploBuild = $DuploBuild, deviceId = $deviceId]';
+    return '[userAgent = $userAgent, DuploBuild = $duploBuild, deviceId = $deviceId]';
   }
 }

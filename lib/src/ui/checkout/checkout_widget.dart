@@ -29,10 +29,12 @@ class CheckoutWidget extends StatefulWidget {
   // final CardServiceContract cardsService;
   final String publicKey;
   final String secretKey;
+  final CheckoutMethod method;
 
   const CheckoutWidget({
     Key? key,
     required this.charge,
+    required this.method,
     // required this.bankService,
     // required this.cardsService,
     required this.publicKey,
@@ -44,7 +46,7 @@ class CheckoutWidget extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  _CheckoutWidgetState createState() => _CheckoutWidgetState(charge);
+  _CheckoutWidgetState createState() => _CheckoutWidgetState(charge, method);
 }
 
 class _CheckoutWidgetState extends BaseState<CheckoutWidget>
@@ -59,13 +61,17 @@ class _CheckoutWidgetState extends BaseState<CheckoutWidget>
   late AnimationController _animationController;
   CheckoutResponse? _response;
   var controller1, controller2;
-  _CheckoutWidgetState(this._charge);
+  _CheckoutWidgetState(this._charge, this.method);
 
   @override
   void initState() {
     super.initState();
-    if (_charge.currency != "NGN") {
+    if (_charge.currency != "NGN" || method == CheckoutMethod.card) {
       _iscard = true;
+    }else if (method == CheckoutMethod.bank) {
+      _isbank = true;
+    }else if (method == CheckoutMethod.ussd) {
+      _isussd = true;
     }
     _init();
     _animationController = AnimationController(
@@ -104,6 +110,7 @@ class _CheckoutWidgetState extends BaseState<CheckoutWidget>
                           publicKey: widget.publicKey,
                           charge: _charge,
                           onResponse: _onPaymentResponse,
+                          logo: widget.logo
                         )
                       : _isbank
                           ? Banktransfer(
@@ -111,6 +118,7 @@ class _CheckoutWidgetState extends BaseState<CheckoutWidget>
                               publickey: widget.publicKey,
                               charge: _charge,
                               onResponse: _onPaymentResponse,
+                              logo: widget.logo
                             )
                           : _isussd
                           ? Ussd(
@@ -118,11 +126,13 @@ class _CheckoutWidgetState extends BaseState<CheckoutWidget>
                               publickey: widget.publicKey,
                               charge: _charge,
                               onResponse: _onPaymentResponse,
+                              logo: widget.logo
                             )
                           : Fundwallet(
                               secretKey: widget.secretKey,
                               charge: _charge,
                               onResponse: _onPaymentResponse,
+                              logo: widget.logo
                             ),
                   const SizedBox(
                     height: 35,

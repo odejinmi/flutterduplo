@@ -5,7 +5,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-import '../constant/constant.dart';
 
 class Copy extends StatefulWidget {
   String quote;
@@ -35,8 +34,8 @@ class _CopyState extends State<Copy> {
         });
       },
       child: Container(
-        padding: EdgeInsets.symmetric(horizontal: 5, vertical: 5),
-        decoration: BoxDecoration(
+        padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 5),
+        decoration: const BoxDecoration(
           color: Color(0xff69CEB8),
           borderRadius: BorderRadius.all(Radius.circular(5))
         ),
@@ -48,7 +47,7 @@ class _CopyState extends State<Copy> {
               size: 9.11,
               color: Colors.white,
             ),
-            SizedBox(width: 5,),
+            const SizedBox(width: 5,),
             Text(
               name,
               style: const TextStyle(fontSize: 7.59, color: Colors.white, fontWeight: FontWeight.w600),

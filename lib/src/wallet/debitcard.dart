@@ -27,9 +27,11 @@ class Debitcard extends StatefulWidget {
   final Charge charge;
   final OnResponse<CheckoutResponse> onResponse;
   final String publicKey, secretKey;
+  final Widget? logo;
   const Debitcard({
     Key? key,
     required this.charge,
+    this.logo,
     required this.onResponse,
     required this.publicKey,
     required this.secretKey,
@@ -185,7 +187,7 @@ class DebitcardState extends BaseCheckoutMethodState<Debitcard> {
                               const SizedBox(
                                 height: 30,
                               ),
-                              Topback(charge: _charge, onResponse: onResponse),
+                              Topback(charge: _charge, onResponse: onResponse, logo: widget.logo, ),
                               Align(
                                 alignment: Alignment.topRight,
                                 child: Text(

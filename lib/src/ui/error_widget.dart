@@ -2,10 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutterduplo/src/ui/statuswidget.dart';
 
 import '../../flutterduplo.dart';
-import '../common/card_utils.dart';
-import '../common/utils.dart';
-import 'animated_widget.dart';
-import 'buttons.dart';
 
 class ErrorPage extends StatelessWidget {
   final TickerProvider vSync;
@@ -40,9 +36,6 @@ class ErrorPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Remove 'Retry buttons for bank payment because when you retry a transaction it ret
-    var buttonMargin =
-        isCardPayment ? const SizedBox(height: 5.0) : emptyContainer;
     return Material(
       color: const Color(0xffF5F5F5),
       // elevation: 5.0,

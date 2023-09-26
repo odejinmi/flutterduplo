@@ -110,8 +110,6 @@ class Duplo {
   /// * You can also pass the [PaymentCard] object and we'll use it to prepopulate the
   /// card  fields if card payment is being used
   ///
-  /// [fullscreen] - Whether to display the payment in a full screen dialog or not
-  ///
   /// [logo] - The widget to display at the top left of the payment prompt.
   /// Defaults to an Image widget with Duplo's logo.
   ///
@@ -129,7 +127,6 @@ class Duplo {
     BuildContext context, {
     required Charge charge,
     CheckoutMethod method = CheckoutMethod.selectable,
-    bool fullscreen = false,
     Widget? logo,
     bool hideEmail = false,
     bool hideAmount = false,
@@ -223,6 +220,7 @@ class _Duplo {
       builder: (BuildContext context) => CheckoutWidget(
         publicKey: publicKey,
         secretKey: secretKey,
+        method: method,
         // bankService: BankService(),
         // cardsService: CardService(),
         charge: charge,

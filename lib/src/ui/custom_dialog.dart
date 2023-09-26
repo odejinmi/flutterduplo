@@ -1,7 +1,6 @@
 import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 /// This is a modification of [AlertDialog]. A lot of modifications was made. The goal is
 /// to retain the dialog feel and look while adding the close IconButton

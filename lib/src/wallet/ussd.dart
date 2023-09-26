@@ -23,11 +23,14 @@ import 'copy.dart';
 class Ussd extends StatefulWidget {
   final Charge charge;
   final String secretkey, publickey;
+  
+  final Widget? logo;
   final OnResponse<CheckoutResponse> onResponse;
   const Ussd({Key? key,
     required this.charge,
     required this.secretkey,
     required this.publickey,
+    this.logo,
     required this.onResponse}) : super(key: key);
 
   @override
@@ -65,13 +68,13 @@ class UssdState extends BaseCheckoutMethodState<Ussd> {
     setState(() {
       isloading = true;
     });
-    var body_json = {
+    var bodyJson = {
       "email": _charge.email,
       "amount": (_charge.amount ~/ 100).toString(),
       "currency": _charge.currency,
       "reference": _charge.reference,
     };
-    res = await ussdinitialize(body_json,widget.secretkey);
+    res = await ussdinitialize(bodyJson,widget.secretkey);
 
     var cmddetails = jsonDecode(res);
 
@@ -107,11 +110,11 @@ class UssdState extends BaseCheckoutMethodState<Ussd> {
     setState(() {
       isloading = true;
     });
-    var body_json = {
+    var bodyJson = {
       "bankCode": bankcode,
       "ref": _charge.reference,
     };
-    res = await ussdpayment(body_json,widget.secretkey);
+    res = await ussdpayment(bodyJson,widget.secretkey);
 
     var cmddetails = jsonDecode(res);
 
@@ -138,10 +141,10 @@ class UssdState extends BaseCheckoutMethodState<Ussd> {
     setState(() {
       isloading = true;
     });
-    var body_json = {
+    var bodyJson = {
       "ref": _charge.reference,
     };
-    res = await verifypayment(body_json,widget.secretkey);
+    res = await verifypayment(bodyJson,widget.secretkey);
 
     var cmddetails = jsonDecode(res);
 
@@ -169,7 +172,6 @@ class UssdState extends BaseCheckoutMethodState<Ussd> {
           verify: false);
       return _onPaymentResponse(response);
     }
-    setState(() {});
   }
 
   bool ischange = false;
@@ -260,7 +262,7 @@ class UssdState extends BaseCheckoutMethodState<Ussd> {
                     child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Topback(charge: _charge, onResponse: onResponse),
+                          Topback(charge: _charge, onResponse: onResponse, logo: widget.logo,),
                           const SizedBox(height: 20,),
                           Align(
                             alignment: Alignment.topRight,
@@ -382,9 +384,9 @@ class UssdState extends BaseCheckoutMethodState<Ussd> {
                               ):
                           Column(
                             children: [
-                              Row(
+                              const Row(
                                 children: [
-                                  const Text("Select Bank"),
+                                  Text("Select Bank"),
                                 ],
                               ),
                               Container(

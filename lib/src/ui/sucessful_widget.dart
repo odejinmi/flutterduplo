@@ -3,8 +3,6 @@
 import 'package:flutter/material.dart';
 
 import '../../flutterduplo.dart';
-import '../common/utils.dart';
-import 'animated_widget.dart';
 import 'statuswidget.dart';
 
 class SuccessfulWidget extends StatefulWidget {
@@ -73,7 +71,6 @@ class _SuccessfulWidgetState extends State<SuccessfulWidget>
 
   @override
   Widget build(BuildContext context) {
-    final accentColor = Theme.of(context).colorScheme.secondary;
     return Material(
       color: const Color(0xffF5F5F5),
       // elevation: 5.0,

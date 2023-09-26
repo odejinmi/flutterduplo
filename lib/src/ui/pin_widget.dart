@@ -1,15 +1,9 @@
 // ignore_for_file: library_private_types_in_public_api
 
 import 'package:flutter/material.dart';
-import 'package:flutterduplo/src/ui/topback.dart';
-import 'package:google_fonts/google_fonts.dart';
 
-import '../../flutterduplo.dart';
-import '../common/utils.dart';
 import '../constant/submitbutton.dart';
 import 'base_widget.dart';
-import 'buttons.dart';
-import 'custom_dialog.dart';
 import 'input/pin_field.dart';
 
 class PinWidget extends StatefulWidget {
@@ -67,5 +61,3 @@ class _PinWidgetState extends BaseState<PinWidget> {
 
   get disablebutton => pined.length != 4;
 }
-
-const _startCount = 4;

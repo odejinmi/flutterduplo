@@ -13,4 +13,5 @@ abstract class BaseCheckoutMethodState<T extends StatefulWidget>
   BaseCheckoutMethodState(this.onResponse, this._method);
 
   CheckoutMethod get method => _method;
+
 }

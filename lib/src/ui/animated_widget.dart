@@ -41,6 +41,7 @@ abstract class BaseAnimatedState<T extends StatefulWidget> extends BaseState<T>
   late AnimationController controller;
 
   @override
+  @mustCallSuper
   void initState() {
     super.initState();
     alwaysPop = true;

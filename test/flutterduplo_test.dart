@@ -1,5 +1,4 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:flutterduplo/flutterduplo.dart';
 // import 'package:flutterduplo/flutterduplo_platform_interface.dart';
 // import 'package:flutterduplo/flutterduplo_method_channel.dart';
 
