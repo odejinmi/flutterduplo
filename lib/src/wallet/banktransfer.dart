@@ -528,8 +528,8 @@ class _BanktransferState extends BaseCheckoutMethodState<Banktransfer> {
 
     var cmddetails = jsonDecode(res);
 
-    isloading2 = false;
     if (cmddetails['status']) {
+      isloading2 = false;
       var response = CheckoutResponse(
           message: cmddetails['message'],
           reference: _charge.reference,

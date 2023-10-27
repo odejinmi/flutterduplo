@@ -1,6 +1,6 @@
 name: flutterduplo
 description: A Flutter plugin for making payments via Duplo Payment Gateway. Completely supports all platforms.
-version: 0.0.2
+version: 0.0.3
 homepage: https://github.com/odejinmi/flutterduplo
 
 environment:

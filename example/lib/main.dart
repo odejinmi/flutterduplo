@@ -84,9 +84,9 @@ class _NewpageState extends State<Newpage> {
     plugin.initialize(
          //test
         // publicKey: 'pk_test_z3q5jhyivn4png4zo7p2obnjdgbhmzygfib8ua',
-        // secretKey: 'sk_test_eslf6wsrzvccc6xnp9pvukiejq8lauenhv7cp9w'
+        secretKey: 'sk_test_qez90izgknchzxjejas1nw8pdnhrli7khdr6hq9',
+        // secretKey: 'sk_live_cpnkeqrgayn5fjrdz5szgd5fl2jxqq5hdvmj2z1',
         publicKey: 'pk_live_cllwoquh6duwcojl6ils7mhoieene068gc3dgv',
-        secretKey: 'sk_live_bfege07nepjhbrjebuth041im4pplrwv6bnvlbh'
     ); //Replace with your keys
     super.initState();
   }
@@ -236,7 +236,7 @@ class _NewpageState extends State<Newpage> {
     _formKey.currentState?.save();
     Charge charge = Charge()
       ..amount = int.parse(phoneController.text) // In base currency
-      ..email = 'sdkapp@email.com'
+      ..email = 'sdkapp1@email.com'
       ..currency = dropdownvalue;
     // ..card = _getCardFromUI();
 

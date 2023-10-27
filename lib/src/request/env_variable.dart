@@ -12,15 +12,22 @@ const debug = true;
 var abitID = "";
 var token = "";
 
-parseURL(uri) {
-  var uu = Uri.parse("${url}api/s2s/$uri");
+String baseurl(secretKey){
+  print("secretKey");
+  print(secretKey);
+  // return secretKey.split('_')[1] == "test"?url:liveurl;
+  // return secretKey.startsWith("sk_test")?url:liveurl;
+  return liveurl;
+}
+parseURL(uri,secretKey) {
+  var uu = Uri.parse("${baseurl(secretKey)}api/s2s/$uri");
   if (kDebugMode) {
     print(uu);
   }
   return uu;
 }
-parseURL2(uri) {
-  var uu = Uri.parse("${url}api/$uri");
+parseURL2(uri,publicKey) {
+  var uu = Uri.parse("${baseurl(publicKey)}api/$uri");
   if (kDebugMode) {
     print(uu);
   }

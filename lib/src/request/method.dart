@@ -9,7 +9,7 @@ import 'env_variable.dart';
 
 var onFailure = '{"success":false,"message":"No internet connection"}';
 
-Future<String> postApiCallTokenized(jsonBody, endpoint, publicKey) async {
+Future<String> postApiCallTokenized(jsonBody, endpoint, secretKey) async {
   var res = onFailure;
 
   if (debug) {
@@ -20,9 +20,9 @@ Future<String> postApiCallTokenized(jsonBody, endpoint, publicKey) async {
 
   try {
     http.Response response = await http.post(
-        endpoint.toString().startsWith("i")?parseURL2(endpoint):parseURL(endpoint),
+        endpoint.toString().startsWith("i")?parseURL2(endpoint,secretKey):parseURL(endpoint,secretKey),
         body: jsonBody,
-        headers: {HttpHeaders.authorizationHeader: "Bearer $publicKey"});
+        headers: {HttpHeaders.authorizationHeader: "Bearer $secretKey"});
     res = response.body;
     if (debug) {
       if (kDebugMode) {
@@ -45,7 +45,7 @@ Future<String> getApiCallTokenized(endpoint, publicKey) async {
   var res = onFailure;
   try {
     http.Response response = await http.get(
-        endpoint.toString().startsWith("i")?parseURL2(endpoint):parseURL(endpoint), headers: {
+        endpoint.toString().startsWith("i")?parseURL2(endpoint,publicKey):parseURL(endpoint,publicKey), headers: {
       HttpHeaders.contentTypeHeader: "application/json",
       HttpHeaders.acceptHeader: "application/json",
       HttpHeaders.authorizationHeader: "Bearer $publicKey"
